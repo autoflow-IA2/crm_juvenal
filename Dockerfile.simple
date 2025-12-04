@@ -1,0 +1,129 @@
+# ============================================
+# Dockerfile SIMPLES - Zero Configuração
+# ============================================
+#
+# Deploy no Easypanel em 3 passos:
+# 1. Conectar repositório Git
+# 2. Dockerfile Path: Dockerfile.simple
+# 3. Port: 3001
+# 4. Deploy!
+#
+# Não precisa configurar variáveis de ambiente!
+# O backend/.env é copiado automaticamente.
+# ============================================
+
+# Stage 1: Build Frontend
+FROM node:18-alpine AS frontend-builder
+
+WORKDIR /app
+
+# Instalar dependências do frontend
+COPY package*.json ./
+COPY tsconfig*.json ./
+COPY vite.config.ts ./
+RUN npm ci --only=production=false
+
+# Copiar código fonte e buildar
+COPY src ./src
+COPY public ./public
+COPY index.html ./
+RUN npm run build
+
+# Stage 2: Build Backend
+FROM node:18-alpine AS backend-builder
+
+WORKDIR /app
+
+# Instalar dependências do backend
+COPY backend/package*.json ./
+COPY backend/tsconfig.json ./
+RUN npm ci --only=production=false
+
+# Copiar código fonte e buildar
+COPY backend/src ./src
+RUN npm run build
+
+# Stage 3: Production
+FROM node:18-alpine AS production
+
+WORKDIR /app
+
+# Instalar apenas dependências de produção
+COPY backend/package*.json ./
+RUN npm ci --only=production && npm cache clean --force
+
+# Copiar código compilado do backend
+COPY --from=backend-builder /app/dist ./dist
+
+# Copiar frontend buildado
+COPY --from=frontend-builder /app/dist ./public
+
+# ⚡ COPIAR .env DO REPOSITÓRIO (zero config!)
+COPY backend/.env ./.env
+
+# Criar servidor que serve frontend + backend juntos
+RUN cat > serve.js << 'EOF'
+const express = require('express');
+const path = require('path');
+
+// Carregar variáveis de ambiente do .env
+require('dotenv').config();
+
+// Importar app do backend
+const app = require('./dist/server').default;
+
+// Servir arquivos estáticos do frontend
+app.use(express.static(path.join(__dirname, 'public'), {
+  index: false,
+  maxAge: '1y',
+  etag: true,
+}));
+
+// Fallback para SPA (todas as rotas não-API vão para index.html)
+app.get('*', (req, res, next) => {
+  // Se é rota da API, deixa o backend lidar
+  if (req.path.startsWith('/api')) {
+    return next();
+  }
+
+  // Caso contrário, serve o frontend
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+const PORT = process.env.PORT || 3001;
+
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log('');
+  console.log('🚀 Juvenal CRM - Production');
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log(`📡 Server: http://localhost:${PORT}`);
+  console.log(`🌐 Frontend: http://localhost:${PORT}`);
+  console.log(`🔌 API: http://localhost:${PORT}/api/v1`);
+  console.log(`🏥 Health: http://localhost:${PORT}/api/v1/health`);
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('');
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('👋 Shutting down gracefully...');
+  server.close(() => {
+    process.exit(0);
+  });
+});
+
+process.on('SIGINT', () => {
+  console.log('👋 Shutting down gracefully...');
+  server.close(() => {
+    process.exit(0);
+  });
+});
+EOF
+
+EXPOSE 3001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3001/api/v1/health', (r) => r.statusCode === 200 ? process.exit(0) : process.exit(1))"
+
+CMD ["node", "serve.js"]
