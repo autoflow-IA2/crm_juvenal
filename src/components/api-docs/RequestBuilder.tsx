@@ -84,7 +84,7 @@ export default function RequestBuilder({ endpoint, onValuesChange }: RequestBuil
 
   if (!needsRequestBuilder) {
     return (
-      <div className="text-sm text-gray-500 italic">
+      <div className="text-sm text-gray-700 italic">
         This endpoint does not require any parameters
       </div>
     )

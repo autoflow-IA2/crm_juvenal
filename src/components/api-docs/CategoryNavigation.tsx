@@ -6,9 +6,10 @@ import MethodBadge from './MethodBadge'
 interface CategoryNavigationProps {
   categories: APICategory[]
   className?: string
+  onNavigate?: () => void
 }
 
-export default function CategoryNavigation({ categories, className = '' }: CategoryNavigationProps) {
+export default function CategoryNavigation({ categories, className = '', onNavigate }: CategoryNavigationProps) {
   // Track which categories are expanded (all by default)
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
     new Set(categories.map((c) => c.name))
@@ -31,6 +32,8 @@ export default function CategoryNavigation({ categories, className = '' }: Categ
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
+    // Close mobile drawer if callback provided
+    onNavigate?.()
   }
 
   return (
@@ -51,7 +54,7 @@ export default function CategoryNavigation({ categories, className = '' }: Categ
             >
               <span>{category.name}</span>
               <div className="flex items-center space-x-2">
-                <span className="text-xs text-gray-500">({category.endpoints.length})</span>
+                <span className="text-xs text-gray-700">({category.endpoints.length})</span>
                 {isExpanded ? (
                   <ChevronDownIcon className="h-4 w-4 text-gray-400" />
                 ) : (
@@ -76,7 +79,7 @@ export default function CategoryNavigation({ categories, className = '' }: Categ
                       <p className="font-medium text-gray-700 group-hover:text-primary-600 truncate">
                         {endpoint.title}
                       </p>
-                      <p className="text-gray-500 font-mono truncate">{endpoint.path}</p>
+                      <p className="text-gray-700 font-mono truncate">{endpoint.path}</p>
                     </div>
                   </button>
                 ))}

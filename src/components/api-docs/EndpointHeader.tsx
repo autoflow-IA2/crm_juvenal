@@ -26,7 +26,7 @@ export default function EndpointHeader({ endpoint, className = '' }: EndpointHea
 
       {/* Description */}
       {endpoint.description && (
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-700">
           {endpoint.description}
         </p>
       )}
@@ -41,7 +41,7 @@ export default function EndpointHeader({ endpoint, className = '' }: EndpointHea
 
           {endpoint.requiredScopes && endpoint.requiredScopes.length > 0 && (
             <div className="flex items-center space-x-1">
-              <span className="text-xs text-gray-500">Scopes:</span>
+              <span className="text-xs text-gray-700">Scopes:</span>
               {endpoint.requiredScopes.map((scope) => (
                 <Badge key={scope} variant="info">
                   {scope}

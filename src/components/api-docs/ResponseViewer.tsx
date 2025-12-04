@@ -35,7 +35,7 @@ export default function ResponseViewer({
   // Loading state
   if (loading) {
     return (
-      <div className={`border border-gray-200 rounded-lg p-6 ${className}`}>
+      <div className={`border border-gray-300 rounded-lg p-6 ${className}`}>
         <div className="flex items-center justify-center space-x-3">
           <svg
             className="animate-spin h-5 w-5 text-primary-600"
@@ -57,7 +57,7 @@ export default function ResponseViewer({
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             />
           </svg>
-          <span className="text-sm text-gray-600">Sending request...</span>
+          <span className="text-sm text-gray-700">Sending request...</span>
         </div>
       </div>
     )
@@ -66,8 +66,8 @@ export default function ResponseViewer({
   // Empty state
   if (!response) {
     return (
-      <div className={`border border-gray-200 rounded-lg p-6 ${className}`}>
-        <div className="text-center text-gray-500">
+      <div className={`border border-gray-300 rounded-lg p-6 ${className}`}>
+        <div className="text-center text-gray-700">
           <p className="text-sm">Click "Try It" to see the response</p>
         </div>
       </div>
@@ -81,14 +81,14 @@ export default function ResponseViewer({
   const headerEntries = Object.entries(response.headers)
 
   return (
-    <div className={`border border-gray-200 rounded-lg overflow-hidden ${className}`}>
+    <div className={`border border-gray-300 rounded-lg overflow-hidden ${className}`}>
       {/* Response Header */}
-      <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
+      <div className="bg-gray-50 px-4 py-3 border-b border-gray-300">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <HTTPStatusBadge status={response.status} />
             <span className="text-sm text-gray-600">{response.statusText}</span>
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-gray-700">
               {response.responseTime}ms
             </span>
           </div>
@@ -119,7 +119,7 @@ export default function ResponseViewer({
 
       {/* Headers Section (collapsible) */}
       {showHeaders && headerEntries.length > 0 && (
-        <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
+        <div className="bg-gray-50 px-4 py-3 border-b border-gray-300">
           <h4 className="text-xs font-semibold text-gray-700 mb-2">Response Headers</h4>
           <div className="space-y-1">
             {headerEntries.map(([key, value]) => (

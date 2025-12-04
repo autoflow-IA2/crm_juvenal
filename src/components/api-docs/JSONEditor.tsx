@@ -88,7 +88,7 @@ export default function JSONEditor({
       )}
 
       {helperText && !error && (
-        <p className="mt-1 text-sm text-gray-500">{helperText}</p>
+        <p className="mt-1 text-sm text-gray-700">{helperText}</p>
       )}
     </div>
   )

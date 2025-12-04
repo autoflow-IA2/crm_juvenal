@@ -48,18 +48,20 @@ export default function APIKeyManager() {
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
             API Key
           </h3>
-          <p className="text-sm text-gray-600 mb-4">
+          <p className="text-sm text-gray-700 mb-4">
             Insira sua API key para testar os endpoints. As keys começam com <code className="px-1 bg-white rounded text-primary-600">jcrm_live_</code> ou <code className="px-1 bg-white rounded text-primary-600">jcrm_test_</code>
           </p>
 
-          <div className="flex gap-2 mb-3">
-            {hasAPIKey ? (
-              <>
-                <Input
-                  value={displayValue}
-                  readOnly
-                  className="flex-1 font-mono text-sm"
-                />
+          {hasAPIKey ? (
+            <div className="flex flex-col sm:flex-row gap-2 mb-3">
+              <Input
+                value={displayValue}
+                readOnly
+                className="flex-1 font-mono text-sm"
+              />
+
+              {/* Botões em grid responsivo */}
+              <div className="grid grid-cols-2 sm:flex gap-2">
                 <Button
                   variant="secondary"
                   size="sm"
@@ -79,29 +81,30 @@ export default function APIKeyManager() {
                   variant="danger"
                   size="sm"
                   onClick={handleClear}
+                  className="col-span-2 sm:col-span-1"
                 >
                   Limpar
                 </Button>
-              </>
-            ) : (
-              <>
-                <Input
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="jcrm_live_abc123..."
-                  className="flex-1 font-mono text-sm"
-                />
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={handleSave}
-                  disabled={!inputValue}
-                >
-                  Salvar
-                </Button>
-              </>
-            )}
-          </div>
+              </div>
+            </div>
+          ) : (
+            <div className="flex gap-2 mb-3">
+              <Input
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder="jcrm_live_abc123..."
+                className="flex-1 font-mono text-sm"
+              />
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleSave}
+                disabled={!inputValue}
+              >
+                Salvar
+              </Button>
+            </div>
+          )}
 
           {/* Validation Status */}
           {validationMessage && (
@@ -129,7 +132,7 @@ export default function APIKeyManager() {
 
           {/* Help Text */}
           {!hasAPIKey && (
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-gray-700 mt-2">
               💡 Crie uma API key no painel de administração ou use uma existente para testar os endpoints
             </p>
           )}

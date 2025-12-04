@@ -64,7 +64,7 @@ export default function ParameterInput({ parameter, value, onChange }: Parameter
           {required && <span className="text-red-500 ml-1">*</span>}
         </label>
         {description && (
-          <p className="text-xs text-gray-500 ml-6">{description}</p>
+          <p className="text-xs text-gray-700 ml-6">{description}</p>
         )}
       </div>
     )

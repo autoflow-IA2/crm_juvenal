@@ -110,13 +110,16 @@ export default function EndpointCard({ endpoint, apiKey, className = '' }: Endpo
               label: 'Response',
               content: (
                 <div className="space-y-3">
-                  <p className="text-sm text-gray-600">Example response:</p>
+                  <p className="text-sm text-gray-700">Example response:</p>
                   {exampleResponse ? (
-                    <pre className="bg-gray-50 border border-gray-200 rounded-lg p-4 overflow-x-auto text-sm">
-                      <code>{JSON.stringify(exampleResponse, null, 2)}</code>
-                    </pre>
+                    <CodeExample
+                      code={JSON.stringify(exampleResponse, null, 2)}
+                      language="json"
+                    />
                   ) : (
-                    <p className="text-sm text-gray-500 italic">No example response available</p>
+                    <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 text-center">
+                      <p className="text-sm text-gray-700">No example response available</p>
+                    </div>
                   )}
                 </div>
               ),

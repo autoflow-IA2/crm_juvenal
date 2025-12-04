@@ -1,0 +1,72 @@
+# Dependencies
+node_modules
+backend/node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build outputs
+dist
+backend/dist
+build
+.next
+out
+
+# Development files
+.git
+.gitignore
+.github
+.vscode
+.idea
+*.md
+!README.md
+
+# Environment files (these should be set in Easypanel)
+.env
+.env.local
+.env.development
+.env.production
+backend/.env
+backend/.env.local
+
+# Testing
+coverage
+.nyc_output
+*.test.ts
+*.spec.ts
+__tests__
+__mocks__
+
+# Logs
+logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp
+temp
+*.tmp
+*.swp
+*.swo
+
+# Documentation
+docs
+CLAUDE.md
+IMPLEMENTATION_SUMMARY.md
+README_API.md
+
+# SQL migration files (if not needed at runtime)
+supabase/migrations
+
+# Scripts
+*.sql
+scripts
+
+# Cache
+.cache
+.parcel-cache
+.eslintcache
