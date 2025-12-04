@@ -4,6 +4,8 @@ import {
   UsersIcon,
   CalendarIcon,
   CurrencyDollarIcon,
+  KeyIcon,
+  DocumentTextIcon,
   XMarkIcon
 } from '@heroicons/react/24/outline'
 
@@ -17,6 +19,8 @@ const navigation = [
   { name: 'Clientes', href: '/clients', icon: UsersIcon },
   { name: 'Agendamentos', href: '/appointments', icon: CalendarIcon },
   { name: 'Financeiro', href: '/finance', icon: CurrencyDollarIcon },
+  { name: 'API Keys', href: '/api-keys', icon: KeyIcon },
+  { name: 'API Docs', href: '/api-docs', icon: DocumentTextIcon },
 ]
 
 export default function Sidebar({ className = '', onClose }: SidebarProps) {

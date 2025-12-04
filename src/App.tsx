@@ -10,6 +10,8 @@ import ClientsPage from './pages/ClientsPage'
 import AppointmentsPage from './pages/AppointmentsPage'
 import FinancePage from './pages/FinancePage'
 import ProfilePage from './pages/ProfilePage'
+import APIDocsPage from './pages/APIDocsPage'
+import APIKeysPage from './pages/APIKeysPage'
 
 function App() {
   const { user, loading } = useAuth()
@@ -41,6 +43,8 @@ function App() {
             <Route path="/appointments" element={<AppointmentsPage />} />
             <Route path="/finance" element={<FinancePage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/api-keys" element={<APIKeysPage />} />
+            <Route path="/api-docs" element={<APIDocsPage />} />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Route>
         )}
