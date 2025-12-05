@@ -72,7 +72,7 @@ const path = require('path');
 require('dotenv').config();
 
 // Importar app do backend
-const app = require('./dist/server').default;
+const app = require('./dist/app').default;
 
 // Servir arquivos estáticos do frontend
 app.use(express.static(path.join(__dirname, 'public'), {
