@@ -7,7 +7,7 @@ const router = Router();
  * GET /health
  * Health check endpoint (sem autenticação)
  */
-router.get('/health', (req: Request, res: Response) => {
+router.get('/health', (_req: Request, res: Response) => {
   sendSuccess(res, {
     status: 'ok',
     timestamp: new Date().toISOString(),

@@ -2,10 +2,7 @@ import { supabaseAdmin } from '../config/supabase';
 import { AppError } from '../middleware/errorHandler';
 import { ErrorCodes } from '../utils/response';
 import { normalizePagination, calculateOffset, createPaginationMeta } from '../utils/pagination';
-import type { Database } from '../types/database.types';
 import type { CreateTransactionInput, UpdateTransactionInput, ListTransactionsQuery } from '../validators/transactions.validator';
-
-type Transaction = Database['public']['Tables']['transactions']['Row'];
 
 export class TransactionsService {
   constructor(private userId: string) {}
@@ -117,13 +114,13 @@ export class TransactionsService {
   }
 
   async updateStatus(id: string, status: string) {
-    return this.update(id, { status });
+    return this.update(id, { status: status as any });
   }
 
   async markAsPaid(id: string, paymentMethod: string, paidAt?: string) {
     return this.update(id, {
       status: 'paid',
-      payment_method: paymentMethod,
+      payment_method: paymentMethod as any,
       paid_at: paidAt || new Date().toISOString()
     });
   }

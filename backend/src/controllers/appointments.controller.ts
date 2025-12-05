@@ -50,7 +50,7 @@ export const updateAppointmentStatus = asyncHandler(async (req: Request, res: Re
   const { id } = req.params;
   const { status, session_notes } = updateStatusSchema.parse(req.body);
   const service = new AppointmentsService(req.userId!);
-  const appointment = await service.updateStatus(id, status, session_notes);
+  const appointment = await service.updateStatus(id, status, session_notes ?? undefined);
   sendSuccess(res, appointment);
 });
 

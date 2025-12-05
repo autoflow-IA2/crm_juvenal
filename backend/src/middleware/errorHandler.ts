@@ -10,7 +10,7 @@ export function errorHandler(
   error: any,
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): void {
   // Log do erro para debugging
   console.error('[Error Handler]', {
@@ -40,7 +40,7 @@ export function errorHandler(
   // Erro do Supabase
   if (error.code && error.message && error.details) {
     let statusCode = 500;
-    let errorCode = ErrorCodes.DATABASE_ERROR;
+    let errorCode: string = ErrorCodes.DATABASE_ERROR;
 
     // Mapear códigos específicos do PostgreSQL
     switch (error.code) {

@@ -2,10 +2,7 @@ import { supabaseAdmin } from '../config/supabase';
 import { AppError } from '../middleware/errorHandler';
 import { ErrorCodes } from '../utils/response';
 import { normalizePagination, calculateOffset, createPaginationMeta } from '../utils/pagination';
-import type { Database } from '../types/database.types';
 import type { CreateAppointmentInput, UpdateAppointmentInput, ListAppointmentsQuery } from '../validators/appointments.validator';
-
-type Appointment = Database['public']['Tables']['appointments']['Row'];
 
 export class AppointmentsService {
   constructor(private userId: string) {}

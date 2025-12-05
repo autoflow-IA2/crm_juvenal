@@ -18,7 +18,7 @@ export const globalRateLimiter = rateLimit({
   },
 
   // Handler customizado para erro de rate limit
-  handler: (req, res) => {
+  handler: (_req, res) => {
     sendError(
       res,
       ErrorCodes.RATE_LIMIT_EXCEEDED,
@@ -48,7 +48,7 @@ export const strictRateLimiter = rateLimit({
     return apiKey || req.ip || 'unknown';
   },
 
-  handler: (req, res) => {
+  handler: (_req, res) => {
     sendError(
       res,
       ErrorCodes.RATE_LIMIT_EXCEEDED,
@@ -72,7 +72,7 @@ export const publicRateLimiter = rateLimit({
     return req.ip || 'unknown';
   },
 
-  handler: (req, res) => {
+  handler: (_req, res) => {
     sendError(
       res,
       ErrorCodes.RATE_LIMIT_EXCEEDED,

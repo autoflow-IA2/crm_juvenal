@@ -234,12 +234,10 @@ export class ApiKeysService {
     }
 
     // Atualizar último uso (fire and forget)
-    supabaseAdmin
+    void supabaseAdmin
       .from('api_keys')
       .update({ last_used_at: new Date().toISOString() })
-      .eq('id', data.id)
-      .then(() => {})
-      .catch(() => {});
+      .eq('id', data.id);
 
     return data;
   }

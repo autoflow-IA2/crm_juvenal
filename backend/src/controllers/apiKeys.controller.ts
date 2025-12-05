@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { ApiKeysService } from '../services/apiKeys.service';
 import { createApiKeySchema, updateApiKeySchema } from '../validators/apiKeys.validator';
-import { sendSuccess, sendError, ErrorCodes } from '../utils/response';
+import { sendSuccess } from '../utils/response';
 import { asyncHandler } from '../middleware/errorHandler';
 
 /**
