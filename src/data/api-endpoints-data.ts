@@ -554,7 +554,7 @@ export const apiEndpointsData: APICategory[] = [
           {
             title: 'Success Response',
             request: {
-              pathParams: {
+              params: {
                 id: '987fcdeb-51a2-43f7-b456-123456789abc',
               },
             },
@@ -888,7 +888,7 @@ export const apiEndpointsData: APICategory[] = [
           {
             title: 'Update Appointment',
             request: {
-              pathParams: {
+              params: {
                 id: '987fcdeb-51a2-43f7-b456-123456789abc',
               },
               body: {
@@ -981,7 +981,7 @@ export const apiEndpointsData: APICategory[] = [
           {
             title: 'Reschedule Appointment',
             request: {
-              pathParams: {
+              params: {
                 id: '987fcdeb-51a2-43f7-b456-123456789abc',
               },
               body: {
@@ -1057,7 +1057,7 @@ export const apiEndpointsData: APICategory[] = [
           {
             title: 'Mark as Completed',
             request: {
-              pathParams: {
+              params: {
                 id: '987fcdeb-51a2-43f7-b456-123456789abc',
               },
               body: {
@@ -1124,7 +1124,7 @@ export const apiEndpointsData: APICategory[] = [
           {
             title: 'Mark as Paid',
             request: {
-              pathParams: {
+              params: {
                 id: '987fcdeb-51a2-43f7-b456-123456789abc',
               },
               body: {
@@ -1182,7 +1182,7 @@ export const apiEndpointsData: APICategory[] = [
           {
             title: 'Delete Appointment',
             request: {
-              pathParams: {
+              params: {
                 id: '987fcdeb-51a2-43f7-b456-123456789abc',
               },
             },

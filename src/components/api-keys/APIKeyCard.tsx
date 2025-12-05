@@ -59,7 +59,7 @@ export default function APIKeyCard({ apiKey, onDelete, onUpdate }: APIKeyCardPro
     }
   }
 
-  const isExpired = apiKey.expires_at && new Date(apiKey.expires_at) < new Date()
+  const isExpired = !!apiKey.expires_at && new Date(apiKey.expires_at) < new Date()
 
   return (
     <Card className="hover:shadow-md transition-shadow">

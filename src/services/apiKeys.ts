@@ -1,4 +1,9 @@
 import { supabase } from '@/lib/supabase'
+import type { Database } from '@/types/database.types'
+
+type DBAPIKey = Database['public']['Tables']['api_keys']['Row']
+type DBAPIKeyInsert = Database['public']['Tables']['api_keys']['Insert']
+type DBAPIKeyUpdate = Database['public']['Tables']['api_keys']['Update']
 
 export interface APIKey {
   id: string
@@ -29,7 +34,12 @@ export async function listAPIKeys(): Promise<APIKey[]> {
     .order('created_at', { ascending: false })
 
   if (error) throw error
-  return data || []
+
+  // Add masked key based on prefix (actual key is not stored/retrievable)
+  return (data || []).map((item: DBAPIKey) => ({
+    ...item,
+    key: item.key_prefix + '••••••••••••••••••••••••••'
+  }))
 }
 
 /**
@@ -57,26 +67,27 @@ export async function createAPIKey(keyData: CreateAPIKeyData): Promise<APIKey> {
     const randomKey = generateAPIKey()
     console.log('✅ createAPIKey: Key gerada:', randomKey.substring(0, 20) + '...')
 
-    const insertData = {
+    // Calculate SHA-256 hash
+    const keyHash = await hashAPIKey(randomKey)
+
+    const insertData: DBAPIKeyInsert = {
       user_id: user.id,
       name: keyData.name,
-      key: randomKey,
       scopes: keyData.scopes,
       expires_at: keyData.expires_in_days
         ? new Date(Date.now() + keyData.expires_in_days * 24 * 60 * 60 * 1000).toISOString()
         : null,
       key_prefix: randomKey.substring(0, 8),
-      key_hash: randomKey, // Temporary: use same as key
+      key_hash: keyHash,
     }
 
     console.log('📝 createAPIKey: Dados para inserir:', {
       ...insertData,
-      key: 'HIDDEN',
       key_hash: 'HIDDEN'
     })
 
-    const { data, error } = await supabase
-      .from('api_keys')
+    const { data, error } = await (supabase
+      .from('api_keys') as any)
       .insert(insertData)
       .select()
       .single()
@@ -86,8 +97,13 @@ export async function createAPIKey(keyData: CreateAPIKeyData): Promise<APIKey> {
       throw new Error(`Erro ao criar API key: ${error.message} (${error.code})`)
     }
 
-    console.log('✅ createAPIKey: Sucesso! ID:', data.id)
-    return data
+    console.log('✅ createAPIKey: Sucesso! ID:', (data as DBAPIKey).id)
+
+    // Return data with the generated key (only shown once)
+    return {
+      ...(data as DBAPIKey),
+      key: randomKey
+    }
   } catch (err) {
     console.error('❌ createAPIKey: Erro geral:', err)
     throw err
@@ -113,15 +129,24 @@ export async function updateAPIKey(
   id: string,
   updates: Partial<Pick<APIKey, 'name' | 'scopes' | 'is_active'>>
 ): Promise<APIKey> {
-  const { data, error } = await supabase
-    .from('api_keys')
-    .update(updates)
+  const updateData: DBAPIKeyUpdate = updates
+
+  const { data, error } = await (supabase
+    .from('api_keys') as any)
+    .update(updateData)
     .eq('id', id)
     .select()
     .single()
 
   if (error) throw error
-  return data
+
+  const dbData = data as DBAPIKey
+
+  // Add masked key (actual key is not stored/retrievable)
+  return {
+    ...dbData,
+    key: dbData.key_prefix + '••••••••••••••••••••••••••'
+  }
 }
 
 /**
@@ -138,6 +163,18 @@ function generateAPIKey(): string {
   }
 
   return prefix + key
+}
+
+/**
+ * Hash API key using SHA-256
+ */
+async function hashAPIKey(key: string): Promise<string> {
+  const encoder = new TextEncoder()
+  const data = encoder.encode(key)
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data)
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+  return hashHex
 }
 
 /**

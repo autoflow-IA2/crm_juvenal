@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { XMarkIcon, CheckIcon, DocumentDuplicateIcon } from '@heroicons/react/24/outline'
+import { CheckIcon, DocumentDuplicateIcon } from '@heroicons/react/24/outline'
 import Modal from '@/components/ui/Modal'
 import Input from '@/components/ui/Input'
 import Button from '@/components/ui/Button'
