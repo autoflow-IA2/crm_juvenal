@@ -90,6 +90,7 @@ export interface Database {
           session_notes: string | null
           price: number
           is_paid: boolean
+          is_pro_bono: boolean
           created_at: string
           updated_at: string
         }
@@ -105,6 +106,7 @@ export interface Database {
           session_notes?: string | null
           price: number
           is_paid?: boolean
+          is_pro_bono?: boolean
           created_at?: string
           updated_at?: string
         }
@@ -120,6 +122,7 @@ export interface Database {
           session_notes?: string | null
           price?: number
           is_paid?: boolean
+          is_pro_bono?: boolean
           created_at?: string
           updated_at?: string
         }

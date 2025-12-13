@@ -48,7 +48,7 @@ app.get('/', (_req, res) => {
   res.json({
     success: true,
     data: {
-      name: 'Juvenal CRM API',
+      name: 'Programando Pensamentos CRM API',
       version: '1.0.0',
       description: 'API REST para integração com ferramentas externas',
       documentation: '/api/health',
@@ -81,7 +81,7 @@ const startServer = async () => {
     app.listen(PORT, '0.0.0.0', () => {
       console.log('');
       console.log('🚀 ====================================== 🚀');
-      console.log(`   Juvenal CRM API - v1.0.0`);
+      console.log(`   Programando Pensamentos CRM API - v1.0.0`);
       console.log('🚀 ====================================== 🚀');
       console.log('');
       console.log(`📡 Servidor rodando em http://localhost:${PORT}`);

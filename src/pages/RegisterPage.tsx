@@ -55,7 +55,7 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <Card className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-primary-600 mb-2">Juvenal CRM</h1>
+          <h1 className="text-3xl font-bold text-primary-600 mb-2">Programando Pensamentos CRM</h1>
           <p className="text-gray-600">Crie sua conta</p>
         </div>
 

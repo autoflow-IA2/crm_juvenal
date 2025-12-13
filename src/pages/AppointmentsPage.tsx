@@ -205,7 +205,12 @@ export default function AppointmentsPage() {
                       <span className={`px-2 py-1 text-xs font-medium rounded-full ${statusColors[appointment.status]}`}>
                         {statusLabels[appointment.status]}
                       </span>
-                      {appointment.is_paid && (
+                      {appointment.is_pro_bono && (
+                        <span className="px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800">
+                          Pro Bono
+                        </span>
+                      )}
+                      {appointment.is_paid && !appointment.is_pro_bono && (
                         <span className="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
                           Pago
                         </span>
@@ -226,8 +231,12 @@ export default function AppointmentsPage() {
                         {sessionTypeLabels[appointment.type] || appointment.type}
                       </p>
                       <p>
-                        <span className="font-medium">Valor:</span> R${' '}
-                        {appointment.price.toFixed(2)}
+                        <span className="font-medium">Valor:</span>{' '}
+                        {appointment.is_pro_bono ? (
+                          <span className="text-purple-600 font-medium">Gratuito</span>
+                        ) : (
+                          `R$ ${appointment.price.toFixed(2)}`
+                        )}
                       </p>
                       {appointment.notes && (
                         <p>

@@ -386,7 +386,7 @@ export default function ApiDocsPage() {
               <CodeBracketIcon className="h-10 w-10" />
             </div>
             <div>
-              <h1 className="text-4xl font-bold">Juvenal CRM API</h1>
+              <h1 className="text-4xl font-bold">Programando Pensamentos CRM API</h1>
               <p className="text-primary-100 text-lg">Documentação v1.0.0</p>
             </div>
           </div>
@@ -976,7 +976,7 @@ Invoke-RestMethod -Uri "${baseUrl}/api/agendamentos/finalizar-passados" -Method 
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-400 py-8">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <p>Juvenal CRM API - v1.0.0</p>
+          <p>Programando Pensamentos CRM API - v1.0.0</p>
           <p className="text-sm mt-2">Desenvolvido para integração com ferramentas externas</p>
         </div>
       </footer>

@@ -66,6 +66,7 @@ export default function AppointmentForm({
     notes: '',
     session_notes: '',
     is_paid: false,
+    is_pro_bono: false,
   })
 
   useEffect(() => {
@@ -80,6 +81,7 @@ export default function AppointmentForm({
         notes: appointment.notes || '',
         session_notes: appointment.session_notes || '',
         is_paid: appointment.is_paid || false,
+        is_pro_bono: appointment.is_pro_bono || false,
       })
     }
   }, [appointment, defaultDate])
@@ -106,7 +108,11 @@ export default function AppointmentForm({
   }
 
   const handleChange = (field: string, value: any) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
+    if (field === 'is_pro_bono' && value === true) {
+      setFormData((prev) => ({ ...prev, [field]: value, price: 0, is_paid: false }))
+    } else {
+      setFormData((prev) => ({ ...prev, [field]: value }))
+    }
   }
 
   const clientOptions = [
@@ -167,26 +173,41 @@ export default function AppointmentForm({
             options={statusOptions}
             required
           />
-          <Input
-            label="Valor (R$)"
-            type="number"
-            step="0.01"
-            min="0"
-            value={formData.price}
-            onChange={(e) => handleChange('price', e.target.value)}
-            required
-          />
           <div className="flex items-center pt-7">
             <label className="flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                checked={formData.is_paid}
-                onChange={(e) => handleChange('is_paid', e.target.checked)}
-                className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                checked={formData.is_pro_bono}
+                onChange={(e) => handleChange('is_pro_bono', e.target.checked)}
+                className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
               />
-              <span className="ml-2 text-sm text-gray-700">Pagamento recebido</span>
+              <span className="ml-2 text-sm text-gray-700">Atendimento Pro Bono</span>
             </label>
           </div>
+          {!formData.is_pro_bono && (
+            <>
+              <Input
+                label="Valor (R$)"
+                type="number"
+                step="0.01"
+                min="0"
+                value={formData.price}
+                onChange={(e) => handleChange('price', e.target.value)}
+                required
+              />
+              <div className="flex items-center pt-7">
+                <label className="flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.is_paid}
+                    onChange={(e) => handleChange('is_paid', e.target.checked)}
+                    className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">Pagamento recebido</span>
+                </label>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
