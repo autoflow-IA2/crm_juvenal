@@ -7,6 +7,7 @@ import type {
   AgendamentoFilters,
   VerificarDisponibilidadeDTO,
   DisponibilidadeResponse,
+  BuscarHorariosDisponiveisDTO,
 } from '../types/agendamento.types';
 
 /**
@@ -289,6 +290,26 @@ export class AgendamentosController {
       const resultado = await agendamentosService.finalizarAgendamentosPassados();
 
       ResponseUtils.success(res, resultado, `${resultado.finalizados} agendamento(s) finalizado(s)`);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * GET /api/agendamentos/horarios-disponiveis
+   * Retorna horários disponíveis para uma data
+   */
+  static async getHorariosDisponiveis(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { date, duration, user_id } = req.query as unknown as BuscarHorariosDisponiveisDTO;
+
+      const horarios = await agendamentosService.getHorariosDisponiveis(
+        date,
+        duration || 60,
+        user_id
+      );
+
+      ResponseUtils.success(res, horarios, 'Horários disponíveis obtidos com sucesso');
     } catch (error) {
       next(error);
     }

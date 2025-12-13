@@ -169,3 +169,28 @@ export interface AgendamentoStats {
   receitaMes: number;
   receitaPendente: number;
 }
+
+/**
+ * DTO para buscar horários disponíveis
+ */
+export interface BuscarHorariosDisponiveisDTO {
+  date: string;        // YYYY-MM-DD
+  duration?: number;   // minutos (default: 60)
+  user_id: string;     // UUID do profissional
+}
+
+/**
+ * Resposta com slots disponíveis
+ */
+export interface HorarioDisponivelResponse {
+  date: string;
+  duration: number;
+  working_hours: {
+    start: string;
+    end: string;
+  } | null;
+  slots: Array<{
+    slot_start: string;  // HH:MM:SS
+    slot_end: string;    // HH:MM:SS
+  }>;
+}

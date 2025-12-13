@@ -4,6 +4,7 @@ import type {
   CreateAgendamentoDTO,
   AgendamentoFilters,
   AgendamentoStats,
+  HorarioDisponivelResponse,
 } from '../types/agendamento.types';
 
 /**
@@ -426,5 +427,51 @@ export const agendamentosService = {
     if (updateError) throw updateError;
 
     return { finalizados: ids.length, ids };
+  },
+
+  /**
+   * Buscar horários disponíveis para uma data
+   * Utiliza a função PostgreSQL get_available_slots
+   */
+  async getHorariosDisponiveis(
+    date: string,
+    duration: number = 60,
+    userId: string
+  ): Promise<HorarioDisponivelResponse> {
+    const supabase = getSupabase();
+
+    // Chamar função PostgreSQL get_available_slots via RPC
+    const { data: slots, error: slotsError } = await supabase.rpc('get_available_slots', {
+      p_user_id: userId,
+      p_date: date,
+      p_duration: duration,
+    });
+
+    if (slotsError) throw slotsError;
+
+    // Buscar working_hours do dia
+    const dayOfWeek = new Date(date + 'T00:00:00').getDay();
+    const { data: workingHours, error: whError } = await supabase
+      .from('working_hours')
+      .select('start_time, end_time')
+      .eq('user_id', userId)
+      .eq('day_of_week', dayOfWeek)
+      .eq('is_active', true)
+      .single();
+
+    // Ignorar erro de "not found" para working_hours
+    if (whError && whError.code !== 'PGRST116') throw whError;
+
+    return {
+      date,
+      duration,
+      working_hours: workingHours
+        ? {
+            start: workingHours.start_time,
+            end: workingHours.end_time,
+          }
+        : null,
+      slots: slots || [],
+    };
   },
 };

@@ -99,6 +99,15 @@ export const verificarDisponibilidadeSchema = z.object({
 });
 
 /**
+ * Schema para buscar horários disponíveis
+ */
+export const buscarHorariosDisponiveisSchema = z.object({
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Data deve estar no formato YYYY-MM-DD'),
+  duration: z.coerce.number().int().positive().optional().default(60),
+  user_id: z.string().uuid('ID do usuário deve ser um UUID válido'),
+});
+
+/**
  * Schema para query params de listagem
  */
 export const listAgendamentosQuerySchema = z.object({
@@ -127,6 +136,7 @@ export type UpdateAgendamentoInput = z.infer<typeof updateAgendamentoSchema>;
 export type UpdateStatusInput = z.infer<typeof updateStatusSchema>;
 export type UpdatePaymentStatusInput = z.infer<typeof updatePaymentStatusSchema>;
 export type VerificarDisponibilidadeInput = z.infer<typeof verificarDisponibilidadeSchema>;
+export type BuscarHorariosDisponiveisInput = z.infer<typeof buscarHorariosDisponiveisSchema>;
 export type ListAgendamentosQuery = z.infer<typeof listAgendamentosQuerySchema>;
 
 // ============================================

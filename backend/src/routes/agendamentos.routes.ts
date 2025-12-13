@@ -7,6 +7,7 @@ import {
   updateStatusSchema,
   updatePaymentStatusSchema,
   verificarDisponibilidadeSchema,
+  buscarHorariosDisponiveisSchema,
   listAgendamentosQuerySchema,
   uuidParamSchema,
 } from '../types/validation.schemas';
@@ -31,6 +32,17 @@ router.get('/proximos', AgendamentosController.getUpcoming);
  * Retorna estatísticas de agendamentos
  */
 router.get('/stats', AgendamentosController.getStats);
+
+/**
+ * GET /api/agendamentos/horarios-disponiveis
+ * Retorna horários disponíveis para uma data específica
+ * Query params: date (YYYY-MM-DD), duration (minutos, default: 60), user_id (UUID)
+ */
+router.get(
+  '/horarios-disponiveis',
+  validateQuery(buscarHorariosDisponiveisSchema),
+  AgendamentosController.getHorariosDisponiveis
+);
 
 /**
  * GET /api/agendamentos

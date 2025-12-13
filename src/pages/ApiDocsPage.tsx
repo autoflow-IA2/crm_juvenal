@@ -132,6 +132,7 @@ function CurlGenerator() {
     { value: '/api/agendamentos/:id/payment', label: 'Atualizar Pagamento', method: 'PATCH' as const },
     { value: '/api/agendamentos/:id', label: 'Deletar Agendamento', method: 'DELETE' as const },
     { value: '/api/agendamentos/verificar-disponibilidade', label: 'Verificar Disponibilidade', method: 'POST' as const },
+    { value: '/api/agendamentos/horarios-disponiveis', label: 'Horários Disponíveis', method: 'GET' as const },
     { value: '/api/agendamentos/finalizar-passados', label: 'Finalizar Passados', method: 'POST' as const },
     // Clientes
     { value: '/api/clientes', label: 'Listar Clientes', method: 'GET' as const },
@@ -177,6 +178,9 @@ function CurlGenerator() {
   "startTime": "14:00",
   "endTime": "15:00"
 }`)
+      } else if (selected.value === '/api/agendamentos/horarios-disponiveis') {
+        setEndpoint('/api/agendamentos/horarios-disponiveis?date=2025-12-25&user_id=uuid-do-usuario&duration=60')
+        setBody('')
       } else if (selected.method === 'PATCH' && selected.value === '/api/agendamentos/:id') {
         setBody(`{
   "notes": "Observações atualizadas"
@@ -669,6 +673,69 @@ export default function ApiDocsPage() {
   "message": "1 conflito(s) encontrado(s)"
 }`}
             />
+          </Endpoint>
+
+          {/* Horários Disponíveis */}
+          <Endpoint method="GET" path="/api/agendamentos/horarios-disponiveis" description="Retorna horários disponíveis para agendamento">
+            <p className="text-gray-600 mb-4">
+              Retorna todos os slots de horário disponíveis para uma data específica, considerando o horário de trabalho configurado,
+              agendamentos existentes e horários bloqueados.
+            </p>
+            <h4 className="font-semibold text-gray-900 mb-2">Query Parameters:</h4>
+            <div className="overflow-x-auto mb-4">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left py-2 pr-4">Parâmetro</th>
+                    <th className="text-left py-2 pr-4">Tipo</th>
+                    <th className="text-left py-2 pr-4">Obrigatório</th>
+                    <th className="text-left py-2">Descrição</th>
+                  </tr>
+                </thead>
+                <tbody className="text-gray-600">
+                  <tr className="border-b"><td className="py-2 pr-4"><code>date</code></td><td className="pr-4">string</td><td className="pr-4">Sim</td><td>Data no formato YYYY-MM-DD</td></tr>
+                  <tr className="border-b"><td className="py-2 pr-4"><code>user_id</code></td><td className="pr-4">uuid</td><td className="pr-4">Sim</td><td>ID do profissional</td></tr>
+                  <tr><td className="py-2 pr-4"><code>duration</code></td><td className="pr-4">number</td><td className="pr-4">Não</td><td>Duração em minutos (padrão: 60)</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h4 className="font-semibold text-gray-900 mb-2">Exemplo:</h4>
+            <CodeBlock
+              code={`curl -X GET "${baseUrl}/api/agendamentos/horarios-disponiveis?date=2025-12-25&user_id=uuid-do-usuario&duration=60" \\
+  -H "X-API-Key: sua-api-key"`}
+              language="bash"
+            />
+            <h4 className="font-semibold text-gray-900 mt-4 mb-2">Resposta:</h4>
+            <CodeBlock
+              code={`{
+  "success": true,
+  "data": {
+    "date": "2025-12-25",
+    "duration": 60,
+    "working_hours": {
+      "start": "09:00:00",
+      "end": "18:00:00"
+    },
+    "slots": [
+      { "slot_start": "09:00:00", "slot_end": "10:00:00" },
+      { "slot_start": "10:00:00", "slot_end": "11:00:00" },
+      { "slot_start": "11:00:00", "slot_end": "12:00:00" },
+      { "slot_start": "14:00:00", "slot_end": "15:00:00" },
+      { "slot_start": "15:00:00", "slot_end": "16:00:00" }
+    ]
+  },
+  "message": "Horários disponíveis obtidos com sucesso"
+}`}
+            />
+            <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <h4 className="font-semibold text-blue-900 mb-2">💡 Observações:</h4>
+              <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
+                <li>Os slots são gerados em intervalos de 30 minutos</li>
+                <li>Slots ocupados por agendamentos existentes são automaticamente excluídos</li>
+                <li>Horários bloqueados também são desconsiderados</li>
+                <li>Se <code className="bg-blue-100 px-1 rounded">working_hours</code> for <code className="bg-blue-100 px-1 rounded">null</code>, o profissional não trabalha nesse dia</li>
+              </ul>
+            </div>
           </Endpoint>
 
           {/* Finalizar Passados */}
