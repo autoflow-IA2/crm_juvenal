@@ -21,7 +21,6 @@ RUN npm ci
 
 # Copiar código fonte
 COPY src/ ./src/
-COPY public/ ./public/
 
 # Variáveis de ambiente para build do Vite
 ENV VITE_SUPABASE_URL=https://joeltxvtidnquzbzslkq.supabase.co
