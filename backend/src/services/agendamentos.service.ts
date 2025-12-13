@@ -255,7 +255,7 @@ export const agendamentosService = {
     if (error) throw error;
 
     // Filtrar manualmente para verificar sobreposição de horários
-    const conflitos = (data as Agendamento[]).filter((agendamento) => {
+    const conflitos = (data as unknown as Agendamento[]).filter((agendamento) => {
       const inicioNovo = startTime;
       const fimNovo = endTime;
       const inicioExistente = agendamento.start_time;
