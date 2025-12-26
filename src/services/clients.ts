@@ -1,6 +1,12 @@
 import { supabase } from '@/lib/supabase'
 import type { ClientStatus } from '@/types/database.types'
 
+export interface ClientFilters {
+  name?: string
+  phone?: string
+  status?: ClientStatus
+}
+
 export const clientsService = {
   async getAll() {
     const { data, error } = await supabase
@@ -68,6 +74,40 @@ export const clientsService = {
       .select('*')
       .or(`name.ilike.%${query}%,email.ilike.%${query}%,phone.ilike.%${query}%`)
       .order('name', { ascending: true })
+
+    if (error) throw error
+    return data
+  },
+
+  async getFiltered(filters: ClientFilters) {
+    let query = supabase
+      .from('clients')
+      .select('*')
+
+    // Aplicar filtros de nome e telefone com lógica OR
+    const nameFilter = filters.name
+    const phoneFilter = filters.phone
+
+    if (nameFilter && phoneFilter) {
+      // Ambos fornecidos: busca por nome OU telefone
+      query = query.or(`name.eq.${nameFilter},phone.eq.${phoneFilter}`)
+    } else if (nameFilter) {
+      // Só nome fornecido
+      query = query.eq('name', nameFilter)
+    } else if (phoneFilter) {
+      // Só telefone fornecido
+      query = query.eq('phone', phoneFilter)
+    }
+
+    // Aplicar filtro de status se fornecido
+    if (filters.status) {
+      query = query.eq('status', filters.status)
+    }
+
+    // Ordenar por nome
+    query = query.order('name', { ascending: true })
+
+    const { data, error } = await query
 
     if (error) throw error
     return data

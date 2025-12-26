@@ -27,6 +27,7 @@ export default function ClientsPage() {
   const [filteredClients, setFilteredClients] = useState<Client[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
+  const [searchType, setSearchType] = useState<'all' | 'name' | 'phone'>('all')
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedClient, setSelectedClient] = useState<Client | null>(null)
@@ -38,7 +39,7 @@ export default function ClientsPage() {
 
   useEffect(() => {
     filterClients()
-  }, [clients, searchQuery, statusFilter])
+  }, [clients, searchQuery, searchType, statusFilter])
 
   const loadClients = async () => {
     try {
@@ -60,15 +61,24 @@ export default function ClientsPage() {
       filtered = filtered.filter((client) => client.status === statusFilter)
     }
 
-    // Filter by search query
+    // Filter by search query and search type
     if (searchQuery) {
       const query = searchQuery.toLowerCase()
-      filtered = filtered.filter(
-        (client) =>
-          client.name.toLowerCase().includes(query) ||
-          client.email?.toLowerCase().includes(query) ||
-          client.phone.toLowerCase().includes(query)
-      )
+      filtered = filtered.filter((client) => {
+        switch (searchType) {
+          case 'name':
+            return client.name.toLowerCase().includes(query)
+          case 'phone':
+            return client.phone.toLowerCase().includes(query)
+          case 'all':
+          default:
+            return (
+              client.name.toLowerCase().includes(query) ||
+              client.email?.toLowerCase().includes(query) ||
+              client.phone.toLowerCase().includes(query)
+            )
+        }
+      })
     }
 
     setFilteredClients(filtered)
@@ -148,11 +158,28 @@ export default function ClientsPage() {
       {/* Filters */}
       <Card>
         <div className="flex flex-col sm:flex-row gap-4">
+          <div className="sm:w-48">
+            <select
+              value={searchType}
+              onChange={(e) => setSearchType(e.target.value as 'all' | 'name' | 'phone')}
+              className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+            >
+              <option value="all">Buscar em todos</option>
+              <option value="name">Buscar por nome</option>
+              <option value="phone">Buscar por telefone</option>
+            </select>
+          </div>
           <div className="flex-1">
             <div className="relative">
               <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
               <Input
-                placeholder="Buscar por nome, email ou telefone..."
+                placeholder={
+                  searchType === 'name'
+                    ? "Digite o nome do cliente..."
+                    : searchType === 'phone'
+                    ? "Digite o telefone..."
+                    : "Buscar por nome, email ou telefone..."
+                }
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"

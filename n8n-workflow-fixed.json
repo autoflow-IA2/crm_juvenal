@@ -1,0 +1,49 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://crm-programando-pensamentos.si2cu4.easypanel.host/api/clientes/stats",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "vtmGTnqVqeL+dYSzyrNvcWtRxwgUxIe5Tn+gEWNKJyM="
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 60000,
+          "redirect": {
+            "redirect": {
+              "followRedirects": true,
+              "maxRedirects": 5
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        160,
+        40
+      ],
+      "id": "9a43e32f-4bdc-4a69-ba4e-3b1075ce6fa8",
+      "name": "Teste_API",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 3000,
+      "executeOnce": true
+    }
+  ],
+  "connections": {},
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0953ffe1d93ad29ad55b37c2eb3bf551a6730d93a801229fbe62d5e6c2c933e7"
+  }
+}
