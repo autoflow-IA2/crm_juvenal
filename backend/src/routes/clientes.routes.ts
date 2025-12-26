@@ -7,6 +7,7 @@ import {
   updateClienteStatusSchema,
   listClientesQuerySchema,
   searchClientesQuerySchema,
+  filterClientesQuerySchema,
   uuidParamSchema,
 } from '../types/validation.schemas';
 
@@ -34,6 +35,18 @@ router.get(
   '/search',
   validateQuery(searchClientesQuerySchema),
   ClientesController.search
+);
+
+/**
+ * GET /api/clientes/filter
+ * Busca clientes com filtros exatos (nome OU telefone)
+ * Para uso em integrações externas (N8N, webhooks, etc.)
+ * Query params: name, phone, status
+ */
+router.get(
+  '/filter',
+  validateQuery(filterClientesQuerySchema),
+  ClientesController.filter
 );
 
 /**

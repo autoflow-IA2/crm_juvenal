@@ -222,6 +222,16 @@ export const searchClientesQuerySchema = z.object({
 });
 
 /**
+ * Schema para query params de filtro exato (nome OU telefone)
+ * Para uso em integrações externas (N8N, webhooks, etc.)
+ */
+export const filterClientesQuerySchema = z.object({
+  name: z.string().optional(),
+  phone: z.string().optional(),
+  status: statusClienteEnum.optional(),
+});
+
+/**
  * Tipos inferidos dos schemas de clientes
  */
 export type CreateClienteInput = z.infer<typeof createClienteSchema>;
@@ -229,3 +239,4 @@ export type UpdateClienteInput = z.infer<typeof updateClienteSchema>;
 export type UpdateClienteStatusInput = z.infer<typeof updateClienteStatusSchema>;
 export type ListClientesQuery = z.infer<typeof listClientesQuerySchema>;
 export type SearchClientesQuery = z.infer<typeof searchClientesQuerySchema>;
+export type FilterClientesQuery = z.infer<typeof filterClientesQuerySchema>;

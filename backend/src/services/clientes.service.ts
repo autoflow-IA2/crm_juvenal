@@ -117,6 +117,48 @@ export const clientesService = {
   },
 
   /**
+   * Buscar clientes com filtros exatos (nome OU telefone)
+   * Para uso em integrações externas (N8N, webhooks, etc.)
+   */
+  async getFiltered(filters: { name?: string; phone?: string; status?: string }, userId?: string): Promise<ClienteResponse[]> {
+    const supabase = getSupabase();
+    let query = supabase.from('clients').select('*');
+
+    // Filtro por user_id (para multi-tenancy)
+    if (userId) {
+      query = query.eq('user_id', userId);
+    }
+
+    // Aplicar filtros de nome e telefone com lógica OR
+    const nameFilter = filters.name;
+    const phoneFilter = filters.phone;
+
+    if (nameFilter && phoneFilter) {
+      // Ambos fornecidos: busca por nome OU telefone (exato)
+      query = query.or(`full_name.eq.${nameFilter},phone.eq.${phoneFilter}`);
+    } else if (nameFilter) {
+      // Só nome fornecido (exato)
+      query = query.eq('full_name', nameFilter);
+    } else if (phoneFilter) {
+      // Só telefone fornecido (exato)
+      query = query.eq('phone', phoneFilter);
+    }
+
+    // Aplicar filtro de status se fornecido
+    if (filters.status) {
+      query = query.eq('status', filters.status);
+    }
+
+    // Ordenar por nome
+    query = query.order('full_name', { ascending: true });
+
+    const { data, error } = await query;
+
+    if (error) throw error;
+    return (data as Cliente[]).map(toClienteResponse);
+  },
+
+  /**
    * Criar novo cliente
    */
   async create(cliente: CreateClienteDTO): Promise<ClienteResponse> {

@@ -79,6 +79,44 @@ export class ClientesController {
   }
 
   /**
+   * GET /api/clientes/filter
+   * Busca clientes com filtros exatos (nome OU telefone)
+   * Para uso em integrações externas (N8N, webhooks, etc.)
+   */
+  static async filter(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { name, phone, status } = req.query;
+
+      // Montar objeto de filtros
+      const filters: { name?: string; phone?: string; status?: string } = {};
+
+      if (name && typeof name === 'string') {
+        filters.name = name;
+      }
+
+      if (phone && typeof phone === 'string') {
+        filters.phone = phone;
+      }
+
+      if (status && typeof status === 'string') {
+        filters.status = status;
+      }
+
+      const clientes = await clientesService.getFiltered(filters);
+
+      ResponseUtils.success(
+        res,
+        clientes,
+        clientes.length > 0
+          ? `${clientes.length} cliente(s) encontrado(s)`
+          : 'Nenhum cliente encontrado'
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
    * GET /api/clientes/:id
    * Busca cliente por ID
    */
