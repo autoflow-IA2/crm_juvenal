@@ -360,8 +360,8 @@ export const agendamentosService = {
 
     // Contar por status e tipo
     appointments.forEach((a) => {
-      if (stats.porStatus[a.status] !== undefined) {
-        stats.porStatus[a.status]++;
+      if (stats.porStatus[a.appointment_status] !== undefined) {
+        stats.porStatus[a.appointment_status]++;
       }
       if (stats.porTipo[a.session_type] !== undefined) {
         stats.porTipo[a.session_type]++;

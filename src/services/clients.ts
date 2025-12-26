@@ -12,7 +12,7 @@ export const clientsService = {
     const { data, error } = await supabase
       .from('clients')
       .select('*')
-      .order('name', { ascending: true })
+      .order('full_name', { ascending: true })
 
     if (error) throw error
     return data
@@ -33,10 +33,17 @@ export const clientsService = {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) throw new Error('User not authenticated')
 
+    // Transformar 'name' para 'full_name' se necessário
+    const clientData = { ...client }
+    if (clientData.name && !clientData.full_name) {
+      clientData.full_name = clientData.name
+      delete clientData.name
+    }
+
     const { data, error } = await supabase
       .from('clients')
       .insert({
-        ...client,
+        ...clientData,
         user_id: user.id,
       })
       .select()
@@ -47,10 +54,17 @@ export const clientsService = {
   },
 
   async update(id: string, updates: Record<string, any>) {
+    // Transformar 'name' para 'full_name' se necessário
+    const updateData = { ...updates }
+    if (updateData.name && !updateData.full_name) {
+      updateData.full_name = updateData.name
+      delete updateData.name
+    }
+
     const { data, error } = await supabase
       .from('clients')
       // @ts-ignore - Supabase type issue with dynamic updates
-      .update(updates)
+      .update(updateData)
       .eq('id', id)
       .select()
       .single()
@@ -72,8 +86,8 @@ export const clientsService = {
     const { data, error } = await supabase
       .from('clients')
       .select('*')
-      .or(`name.ilike.%${query}%,email.ilike.%${query}%,phone.ilike.%${query}%`)
-      .order('name', { ascending: true })
+      .or(`full_name.ilike.%${query}%,email.ilike.%${query}%,phone.ilike.%${query}%`)
+      .order('full_name', { ascending: true })
 
     if (error) throw error
     return data
@@ -90,10 +104,10 @@ export const clientsService = {
 
     if (nameFilter && phoneFilter) {
       // Ambos fornecidos: busca por nome OU telefone
-      query = query.or(`name.eq.${nameFilter},phone.eq.${phoneFilter}`)
+      query = query.or(`full_name.eq.${nameFilter},phone.eq.${phoneFilter}`)
     } else if (nameFilter) {
       // Só nome fornecido
-      query = query.eq('name', nameFilter)
+      query = query.eq('full_name', nameFilter)
     } else if (phoneFilter) {
       // Só telefone fornecido
       query = query.eq('phone', phoneFilter)
@@ -105,7 +119,7 @@ export const clientsService = {
     }
 
     // Ordenar por nome
-    query = query.order('name', { ascending: true })
+    query = query.order('full_name', { ascending: true })
 
     const { data, error } = await query
 
@@ -118,7 +132,7 @@ export const clientsService = {
       .from('clients')
       .select('*')
       .eq('status', status)
-      .order('name', { ascending: true })
+      .order('full_name', { ascending: true })
 
     if (error) throw error
     return data

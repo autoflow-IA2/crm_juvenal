@@ -22,7 +22,7 @@ export interface Database {
         Row: {
           id: string
           user_id: string
-          name: string
+          full_name: string
           email: string | null
           phone: string
           birth_date: string | null
@@ -41,7 +41,7 @@ export interface Database {
         Insert: {
           id?: string
           user_id: string
-          name: string
+          full_name: string
           email?: string | null
           phone: string
           birth_date?: string | null
@@ -60,7 +60,7 @@ export interface Database {
         Update: {
           id?: string
           user_id?: string
-          name?: string
+          full_name?: string
           email?: string | null
           phone?: string
           birth_date?: string | null
@@ -83,14 +83,21 @@ export interface Database {
           user_id: string
           client_id: string
           date: string
+          start_time: string
+          end_time: string
           duration: number
-          type: SessionType
-          status: AppointmentStatus
+          session_type: SessionType
+          appointment_status: AppointmentStatus
+          payment_status: string
+          payment_method: string | null
           notes: string | null
           session_notes: string | null
+          private_notes: string | null
           price: number
-          is_paid: boolean
           is_pro_bono: boolean
+          client_name: string | null
+          client_phone: string | null
+          client_email: string | null
           created_at: string
           updated_at: string
         }
@@ -99,13 +106,17 @@ export interface Database {
           user_id: string
           client_id: string
           date: string
+          start_time: string
+          end_time?: string
           duration?: number
-          type: SessionType
-          status?: AppointmentStatus
+          session_type: SessionType
+          appointment_status?: AppointmentStatus
+          payment_status?: string
+          payment_method?: string | null
           notes?: string | null
           session_notes?: string | null
+          private_notes?: string | null
           price: number
-          is_paid?: boolean
           is_pro_bono?: boolean
           created_at?: string
           updated_at?: string
@@ -115,13 +126,17 @@ export interface Database {
           user_id?: string
           client_id?: string
           date?: string
+          start_time?: string
+          end_time?: string
           duration?: number
-          type?: SessionType
-          status?: AppointmentStatus
+          session_type?: SessionType
+          appointment_status?: AppointmentStatus
+          payment_status?: string
+          payment_method?: string | null
           notes?: string | null
           session_notes?: string | null
+          private_notes?: string | null
           price?: number
-          is_paid?: boolean
           is_pro_bono?: boolean
           created_at?: string
           updated_at?: string

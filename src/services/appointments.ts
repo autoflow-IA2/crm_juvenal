@@ -9,7 +9,7 @@ export const appointmentsService = {
         *,
         clients:client_id (
           id,
-          name,
+          full_name,
           email,
           phone
         )
@@ -27,7 +27,7 @@ export const appointmentsService = {
         *,
         clients:client_id (
           id,
-          name,
+          full_name,
           email,
           phone
         )
@@ -46,7 +46,7 @@ export const appointmentsService = {
         *,
         clients:client_id (
           id,
-          name,
+          full_name,
           email,
           phone
         )
@@ -95,7 +95,7 @@ export const appointmentsService = {
         *,
         clients:client_id (
           id,
-          name,
+          full_name,
           email,
           phone
         )
@@ -116,7 +116,7 @@ export const appointmentsService = {
         *,
         clients:client_id (
           id,
-          name,
+          full_name,
           email,
           phone
         )
@@ -152,7 +152,7 @@ export const appointmentsService = {
         *,
         clients:client_id (
           id,
-          name,
+          full_name,
           email,
           phone
         )

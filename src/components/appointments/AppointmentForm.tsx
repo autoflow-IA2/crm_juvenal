@@ -119,7 +119,7 @@ export default function AppointmentForm({
     { value: '', label: 'Selecione um cliente' },
     ...clients.map((client) => ({
       value: client.id,
-      label: client.name,
+      label: client.full_name,
     })),
   ]
 

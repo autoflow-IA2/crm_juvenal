@@ -41,7 +41,7 @@ export default function ClientForm({ client, onSubmit, onCancel }: ClientFormPro
   useEffect(() => {
     if (client) {
       setFormData({
-        name: client.name || '',
+        name: client.full_name || '',
         email: client.email || '',
         phone: client.phone || '',
         birth_date: client.birth_date || '',

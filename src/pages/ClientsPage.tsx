@@ -67,13 +67,13 @@ export default function ClientsPage() {
       filtered = filtered.filter((client) => {
         switch (searchType) {
           case 'name':
-            return client.name.toLowerCase().includes(query)
+            return client.full_name.toLowerCase().includes(query)
           case 'phone':
             return client.phone.toLowerCase().includes(query)
           case 'all':
           default:
             return (
-              client.name.toLowerCase().includes(query) ||
+              client.full_name.toLowerCase().includes(query) ||
               client.email?.toLowerCase().includes(query) ||
               client.phone.toLowerCase().includes(query)
             )
@@ -229,7 +229,7 @@ export default function ClientsPage() {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3">
-                    <h3 className="text-lg font-semibold text-gray-900">{client.name}</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">{client.full_name}</h3>
                     <span className={`px-2 py-1 text-xs font-medium rounded-full ${statusColors[client.status]}`}>
                       {statusLabels[client.status]}
                     </span>

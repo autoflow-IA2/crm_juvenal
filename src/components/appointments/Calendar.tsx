@@ -20,7 +20,7 @@ interface Appointment {
   id: string
   date: string
   clients?: {
-    name: string
+    full_name: string
   }
   status: string
 }
@@ -137,9 +137,9 @@ export default function Calendar({ appointments, onDateClick, onAppointmentClick
                         onAppointmentClick(apt)
                       }}
                       className={`text-xs p-1 rounded text-white truncate ${statusColors[apt.status] || 'bg-gray-500'}`}
-                      title={apt.clients?.name}
+                      title={apt.clients?.full_name}
                     >
-                      {format(parseISO(apt.date), 'HH:mm')} - {apt.clients?.name}
+                      {format(parseISO(apt.date), 'HH:mm')} - {apt.clients?.full_name}
                     </div>
                   ))}
                   {dayAppointments.length > 3 && (
