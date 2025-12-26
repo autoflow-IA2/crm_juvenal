@@ -69,7 +69,7 @@ export interface Agendamento {
   payment_method?: MetodoPagamento;
 
   // Status e Observações
-  status: StatusAgendamento;
+  appointment_status: StatusAgendamento;
   notes?: string;
   private_notes?: string;
 
@@ -102,7 +102,7 @@ export interface CreateAgendamentoDTO {
   payment_method?: MetodoPagamento;
 
   // Status e Observações
-  status?: StatusAgendamento;
+  appointment_status?: StatusAgendamento;
   notes?: string;
   private_notes?: string;
 
